@@ -38,25 +38,25 @@ io.on('connection', socket => {
     socket.join(room);
   }
   console.log('new connection: ', name);
-  console.log('qtd conections: ', io.sockets.listeners.length);
-
-  console.log(socket.connected);
+  console.log('qtd conections: ', io.sockets.sockets.size);
 
   socket.on('location', (location: ILocation) => {
-    console.log('message: ', location);
+    console.log(location);
     // if (room) io.to(room).emit('message', { user: name, message });
     io.emit('location', location);
   });
 
   socket.on('teste', () => {
     socket.emit('teste', {
-      onlineUsers: io.sockets.listeners.length,
+      onlineUsers: io.sockets.sockets.size,
       online: true,
     } as IProps);
   });
 
   socket.on('disconnect', () => {
-    console.log('desconectou');
+    io.emit('teste', {
+      onlineUsers: io.sockets.sockets.size,
+    } as IProps);
     socket.disconnect();
   });
 });
